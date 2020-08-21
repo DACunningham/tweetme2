@@ -3,5 +3,8 @@
 		{
 			"path": "."
 		}
-	]
+	],
+	"settings": {
+		"python.pythonPath": "C:\\Users\\Dexter\\.virtualenvs\\tweetme2-oGMFD0xk\\Scripts\\python.exe"
+	}
 }
