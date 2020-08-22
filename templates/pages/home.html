@@ -6,4 +6,47 @@ This is amazing
 
 {% block content %}
 Welcome to TweetMe2
+Loading.2..
+
+<div id="tweet">
+    <p>Loading...</p>
+</div>
+
+
+<script>
+    const tweetsElement = document.getElementById("tweet")
+    // tweetsElement.innerHTML = "Loading..."
+
+    // var el1 = "<h1>Hi There 1</h1>"
+    // var el2 = "<h1>Hi There 2</h1>"
+    // var el3 = "<h1>Hi There 3</h1>"
+    // tweetsElement.innerHTML = el1 + el2 + el3
+
+    function formatTweetElement(tweet) {
+        var formattedTweet = "<div class='mb-4 tweet' id='tweet-" + tweet.id + "'>" + "<p>" + tweet.content + "</p></div>"
+        return formattedTweet
+    }
+
+    const xhr = new XMLHttpRequest()
+    const method = "GET"
+    const url = "/tweets"
+    const responseType = "json"
+
+    xhr.responseType = responseType
+    xhr.open(method, url)
+    xhr.onload = function () {
+        const serverResponse = xhr.response
+        var listedItems = serverResponse.response
+        var finalTweetStr = ""
+        var i;
+        for (i = 0; i < listedItems.length; i++) {
+            var tweetObj = listedItems[i]
+            finalTweetStr += formatTweetElement(tweetObj)
+
+        }
+        tweetsElement.innerHTML = finalTweetStr
+    }
+    xhr.send()
+
+</script>
 {% endblock content %}
