@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 {% block head_title %} This is amazing {% endblock head_title %}
 {% block content %}
-Welcome to TweetMe2
 
-<div id="tweet">
+<div class="row text-center">
+    <div class="col">
+        <h1>Welcome to TweetMe2</h1>
+    </div>
+</div>
+
+
+<div class="row" id="tweet">
     <p>Loading...</p>
 </div>
 
@@ -18,7 +24,7 @@ Welcome to TweetMe2
 
     function formatTweetElement(tweet) {
         var formattedTweet =
-            "<div class='mb-4 tweet' id='tweet-" +
+            "<div class='mb-4 tweet col-12 col-md-10 mx-auto border rounded py-3' id='tweet-" +
             tweet.id +
             "'>" +
             "<p>" +
