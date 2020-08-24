@@ -1,20 +1,14 @@
 {% extends 'base.html' %}
-
-{% block head_title %}
-This is amazing
-{% endblock head_title %}
-
+{% block head_title %} This is amazing {% endblock head_title %}
 {% block content %}
 Welcome to TweetMe2
-Loading.2..
 
 <div id="tweet">
     <p>Loading...</p>
 </div>
 
-
 <script>
-    const tweetsElement = document.getElementById("tweet")
+    const tweetsElement = document.getElementById("tweet");
     // tweetsElement.innerHTML = "Loading..."
 
     // var el1 = "<h1>Hi There 1</h1>"
@@ -23,30 +17,43 @@ Loading.2..
     // tweetsElement.innerHTML = el1 + el2 + el3
 
     function formatTweetElement(tweet) {
-        var formattedTweet = "<div class='mb-4 tweet' id='tweet-" + tweet.id + "'>" + "<p>" + tweet.content + "</p></div>"
-        return formattedTweet
+        var formattedTweet =
+            "<div class='mb-4 tweet' id='tweet-" +
+            tweet.id +
+            "'>" +
+            "<p>" +
+            tweet.content +
+            "</p><div class='btn-group'>" + LikeBtn(tweet) +
+            "</div></div>";
+        return formattedTweet;
     }
 
-    const xhr = new XMLHttpRequest()
-    const method = "GET"
-    const url = "/tweets"
-    const responseType = "json"
+    function LikeBtn(tweet) {
+        return "<button class='btn btn-primary btn-sm' onclick=handleDidLike(" + tweet.id + "," + tweet.likes + ")>" + tweet.likes + " Likes</button>";
+    }
 
-    xhr.responseType = responseType
-    xhr.open(method, url)
+    function handleDidLike(tweet_id, currentCount) {
+        console.log(tweet_id, currentCount);
+    }
+
+    const xhr = new XMLHttpRequest();
+    const method = "GET";
+    const url = "/tweets";
+    const responseType = "json";
+
+    xhr.responseType = responseType;
+    xhr.open(method, url);
     xhr.onload = function () {
-        const serverResponse = xhr.response
-        var listedItems = serverResponse.response
-        var finalTweetStr = ""
+        const serverResponse = xhr.response;
+        var listedItems = serverResponse.response;
+        var finalTweetStr = "";
         var i;
         for (i = 0; i < listedItems.length; i++) {
-            var tweetObj = listedItems[i]
-            finalTweetStr += formatTweetElement(tweetObj)
-
+            var tweetObj = listedItems[i];
+            finalTweetStr += formatTweetElement(tweetObj);
         }
-        tweetsElement.innerHTML = finalTweetStr
-    }
-    xhr.send()
-
+        tweetsElement.innerHTML = finalTweetStr;
+    };
+    xhr.send();
 </script>
 {% endblock content %}
