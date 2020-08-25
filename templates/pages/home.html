@@ -25,16 +25,30 @@
 
 <script>
     function handleTweetCreateFormDidSubmit(event) {
-        event.preventDefault()
-        const myForm = event.target
-        const myFormData = new FormData(myForm)
-        const url = myForm.getAttribute("action")
-        const method = myForm.getAttribute("method")
+        event.preventDefault();
+        const myForm = event.target;
+        const myFormData = new FormData(myForm);
+        const url = myForm.getAttribute("action");
+        const method = myForm.getAttribute("method");
         const xhr = new XMLHttpRequest();
+        xhr.responseType = "json"
         xhr.open(method, url);
         xhr.onload = function () {
-            const serverResponse = xhr.response;
-            console.log(serverResponse)
+            if (xhr.status === 201) {
+                const newTweetJson = xhr.response;
+                //const newTweetJson = JSON.parse(newTweet)
+                console.log(newTweetJson.likes)
+                const newTweetElement = formatTweetElement(newTweetJson)
+                console.log(newTweetElement)
+                const ogHtml = tweetsContainerElement.innerHTML
+                tweetsContainerElement.innerHTML = newTweetElement + ogHtml
+                myForm.reset();
+            } else if (xhr.status === 400) {
+                const errorJson = xhr.response;
+                console.log(errorJson);
+            } else if (xhr.status === 500) {
+                alert("500 Server Error.");
+            }
 
             // console.log(endpoint, method)
             // for (var myItem of myFormData.entries()) {
@@ -42,13 +56,18 @@
             // }
             // console.log(event)
         }
+        xhr.onerror = function () {
+            alert("Error. Try Later (JS).")
+        }
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest");
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         xhr.send(myFormData);
     }
-    const tweetCreateFormEl = document.getElementById("tweet-create-form")
+    const tweetCreateFormEl = document.getElementById("tweet-create-form");
 
-    tweetCreateFormEl.addEventListener("submit", handleTweetCreateFormDidSubmit)
+    tweetCreateFormEl.addEventListener("submit", handleTweetCreateFormDidSubmit);
 
-    const tweetsEl = document.getElementById("tweet");
+    const tweetsContainerElement = document.getElementById("tweet");
 
     function LoadTweets(tweetsElement) {
         const xhr = new XMLHttpRequest();
@@ -58,6 +77,7 @@
 
         xhr.responseType = responseType;
         xhr.open(method, url);
+
         xhr.onload = function () {
             const serverResponse = xhr.response;
             var listedItems = serverResponse.response;
@@ -69,10 +89,12 @@
             }
             tweetsElement.innerHTML = finalTweetStr;
         };
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest");
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         xhr.send();
     }
 
-    LoadTweets(tweetsEl)
+    LoadTweets(tweetsContainerElement);
 
     function formatTweetElement(tweet) {
         var formattedTweet =
