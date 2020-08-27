@@ -48,6 +48,8 @@
                 window.location.href = "/login";
             } else if (xhr.status === 500) {
                 alert("500 Server Error.");
+            } else if (xhr.status === 403) {
+                alert("403 Auth Error.");
             }
 
             // console.log(endpoint, method)
@@ -80,7 +82,7 @@
 
         xhr.onload = function () {
             const serverResponse = xhr.response;
-            var listedItems = serverResponse.response;
+            var listedItems = serverResponse;
             var finalTweetStr = "";
             var i;
             for (i = 0; i < listedItems.length; i++) {
