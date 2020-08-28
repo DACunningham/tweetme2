@@ -25,7 +25,7 @@ SECRET_KEY = "=@oi^46$%y*@$z534h1zry&rla8_$wrosc#sn^hz-ay&q^&=@o"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", ".my-domain.com"]
+ALLOWED_HOSTS = ["127.0.0.1", ".my-domain.com", "localhost"]
 LOGIN_URL = "/login"
 MAX_TWEET_LENGTH = 240
 TWEET_ACTION_OPTIONS = ["like", "unlike", "retweet"]
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # third-party
     "rest_framework",
+    "corsheaders",
     # internal
     "tweets",
 ]
@@ -49,6 +50,8 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -120,6 +123,8 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_URLS_REGEX = r"^/api/.*$"
 
 DEFAULT_RENDERER_CLASSES = [
     "rest_framework.renderers.JSONRenderer",
