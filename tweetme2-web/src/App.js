@@ -1,39 +1,9 @@
 import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-
-function LoadTweets(callback) {
-  const xhr = new XMLHttpRequest();
-  const method = "GET";
-  const url = "http://localhost:8000/api/tweets/";
-  const responseType = "json";
-  xhr.responseType = responseType;
-  xhr.open(method, url);
-
-  xhr.onload = function () {
-    callback(xhr.response, xhr.status);
-  };
-  xhr.onerror = function (e) {
-    console.log(e);
-    callback({ message: "Request error." }, 400);
-  };
-  // xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest");
-  // xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-  xhr.send();
-}
+import { TweetsList } from "./tweets";
 
 function App() {
-  const [tweets, setTweets] = useState([]);
-
-  useEffect(() => {
-    const myCallback = (response, status) => {
-      console.log(response, status);
-      if (status === 200) {
-        setTweets(response);
-      }
-    };
-    LoadTweets(myCallback);
-  }, []);
   return (
     <div className="App">
       <header className="App-header">
@@ -41,11 +11,9 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <p>
-          {tweets.map((tweet, index) => {
-            return <li>{tweet.content}</li>;
-          })}
-        </p>
+        <div>
+          <TweetsList />
+        </div>
         <a
           className="App-link"
           href="https://reactjs.org"
